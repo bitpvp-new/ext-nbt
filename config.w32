@@ -1,0 +1,7 @@
+ARG_ENABLE('nbt', 'Named Binary Tag support', 'no');
+
+if (PHP_NBT != 'no') {
+	AC_DEFINE('HAVE_NBT', 1, 'Named Binary Tag support enabled');
+
+	EXTENSION('nbt', 'nbt.c NbtTags.c NbtSerializer.c JsonNbtParser.c', null, '/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 /std:c11');
+}
