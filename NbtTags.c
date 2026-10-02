@@ -1086,7 +1086,7 @@ PHP_METHOD(pocketmine_nbt_tag_ListTag, __construct) {
 	zend_update_property_long(list_tag_ce, Z_OBJ_P(getThis()), "tagType", sizeof("tagType") - 1, tagType);
 
 	zval empty_arr;
-	array_init(&empty_arr);
+	array_init_size(&empty_arr, value ? zend_hash_num_elements(Z_ARRVAL_P(value)) : 0);
 	zend_update_property(list_tag_ce, Z_OBJ_P(getThis()), "value", sizeof("value") - 1, &empty_arr);
 	zval_ptr_dtor(&empty_arr);
 

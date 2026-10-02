@@ -334,7 +334,7 @@ static void read_value(JsonStream *stream, zval *return_value) {
 	{
 		char suffix = '\0';
 		size_t numeric_length = value.length;
-		char *numeric_value;
+		char *numeric_value = NULL;
 		char last_char =
 			(char)tolower((unsigned char)value.data[value.length - 1]);
 		if (last_char == 'b' || last_char == 's' || last_char == 'l' ||
@@ -342,8 +342,8 @@ static void read_value(JsonStream *stream, zval *return_value) {
 			suffix = last_char;
 			--numeric_length;
 		}
-		numeric_value = estrndup(value.data, numeric_length);
-		if (is_numeric_str(numeric_value, numeric_length)) {
+		if (is_numeric_str(value.data, numeric_length)) {
+			numeric_value = estrndup(value.data, numeric_length);
 			char *endptr;
 			if (suffix == 'f' || suffix == 'd' ||
 				memchr(numeric_value, '.', numeric_length) != NULL ||
@@ -450,7 +450,9 @@ static void read_value(JsonStream *stream, zval *return_value) {
 					value.length);
 			}
 		}
-		efree(numeric_value);
+		if (numeric_value != NULL) {
+			efree(numeric_value);
+		}
 	}
 	text_buffer_release(&value);
 }
